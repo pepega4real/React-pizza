@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import PizzaLoader from './PizzaLoader'
 
-const PizzaBlock = ({ title, imgUrl, price }) => {
+const PizzaBlock = ({ title, imgUrl, price, isPizzasLoaded }) => {
   const [pizzaCount, setPizzaCount] = useState(0)
   const doughList = ['тонкое', 'традиционное']
   const [toggleDouth, setToggleDouth] = useState(0)
@@ -19,7 +20,9 @@ const PizzaBlock = ({ title, imgUrl, price }) => {
     setActiveSizePizza(index)
   }
 
-  return (
+  return isPizzasLoaded ? (
+    <PizzaLoader />
+  ) : (
     <div className='pizza-block'>
       <img className='pizza-block__image' src={imgUrl} alt='Pizza' />
       <h4 className='pizza-block__title'>{title}</h4>

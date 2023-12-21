@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Sort = () => {
+  const [toggleSort, setToggleSort] = useState(false)
+  const [activeSortIndex, setActiveSortIndex] = useState(0)
+  const sortList = ['популярности', 'цене', 'алфавиту']
+
+  const toggleSortPopup = () => {
+    setToggleSort((prev) => !prev)
+  }
+
+  const setActiveIndex = (index) => {
+    setActiveSortIndex(index)
+    setToggleSort(false)
+  }
+
+  useEffect(() => {
+    document.body.addEventListener('click', (e) => console.log(e))
+  }, [activeSortIndex])
+
   return (
     <div className='sort'>
-      <div className='sort__label'>
+      <div onClick={toggleSortPopup} className='sort__label'>
         <svg
           width='10'
           height='6'
@@ -16,15 +33,22 @@ const Sort = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span>популярности</span>
+        <span>{sortList[activeSortIndex]}</span>
       </div>
-      <div className='sort__popup'>
-        <ul>
-          <li className='active'>популярности</li>
-          <li>цене</li>
-          <li>алфавиту</li>
-        </ul>
-      </div>
+      {toggleSort && (
+        <div className='sort__popup'>
+          <ul>
+            {sortList.map((sortName, index) => (
+              <li
+                className={activeSortIndex === index ? 'active' : ''}
+                onClick={() => setActiveIndex(index)}
+                key={sortName}>
+                {sortName}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }
