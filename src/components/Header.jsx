@@ -2,7 +2,9 @@ import React from 'react'
 import pizzaLogo from '../assets/img/pizza-logo.svg'
 import { Link } from 'react-router-dom'
 
-const Header = () => {
+import PizzasSearch from '../components/PizzasSearch'
+
+const Header = ({ searchPizzasValue, setSearchPizzasValue }) => {
   return (
     <div className='header'>
       <div className='container'>
@@ -15,6 +17,10 @@ const Header = () => {
             <p>самая вкусная пицца во вселенной</p>
           </div>
         </div>
+        <PizzasSearch
+          searchPizzasValue={searchPizzasValue}
+          setSearchPizzasValue={setSearchPizzasValue}
+        />
         <div className='header__cart'>
           <Link to='/cart'>
             <button className='button button--cart'>

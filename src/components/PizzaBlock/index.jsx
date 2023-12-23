@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import PizzaLoader from './PizzaLoader'
+import React, { memo, useState } from 'react'
 
-const PizzaBlock = ({ title, imgUrl, price, isPizzasLoaded }) => {
+const PizzaBlock = ({ title, imgUrl, price }) => {
   const [pizzaCount, setPizzaCount] = useState(0)
   const doughList = ['тонкое', 'традиционное']
   const [toggleDouth, setToggleDouth] = useState(0)
@@ -20,9 +19,7 @@ const PizzaBlock = ({ title, imgUrl, price, isPizzasLoaded }) => {
     setActiveSizePizza(index)
   }
 
-  return isPizzasLoaded ? (
-    <PizzaLoader />
-  ) : (
+  return (
     <div className='pizza-block-wrapper'>
       <div className='pizza-block'>
         <img className='pizza-block__image' src={imgUrl} alt='Pizza' />
@@ -72,4 +69,4 @@ const PizzaBlock = ({ title, imgUrl, price, isPizzasLoaded }) => {
   )
 }
 
-export default PizzaBlock
+export default memo(PizzaBlock)

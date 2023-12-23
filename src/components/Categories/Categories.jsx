@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 import styles from './Categories.module.scss'
 
-const Categories = () => {
-  const categoriesList = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
-  const [activeCategory, setActiveCategory] = useState(0)
-
+const Categories = ({ categoriesList, activeCategory, setActiveCategory }) => {
   const changeActiveCategory = (index) => {
     setActiveCategory(index)
   }
