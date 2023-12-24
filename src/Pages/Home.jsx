@@ -3,6 +3,7 @@ import Categories from '../components/Categories/Categories'
 import Sort from '../components/Sort'
 import PizzaBlock from '../components/PizzaBlock'
 import PizzaLoader from '../components/PizzaBlock/PizzaLoader'
+import Pagination from '../components/Pagination'
 
 const Home = ({
   pizzaList,
@@ -17,6 +18,7 @@ const Home = ({
   setSortType,
   setSortingOrder,
   sortingOrder,
+  setPageNumber,
 }) => {
   const skeletonsLoader = [...Array(4)].map((_, index) => <PizzaLoader key={index} />)
   const filteredPizzas = pizzaList.filter((pizza) =>
@@ -47,6 +49,7 @@ const Home = ({
             ? skeletonsLoader
             : filteredPizzas.map((pizza) => <PizzaBlock key={pizza?.imgUrl} {...pizza} />)}
         </div>
+        <Pagination setPageNumber={setPageNumber} />
       </div>
     </div>
   )

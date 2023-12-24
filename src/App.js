@@ -15,6 +15,7 @@ function App() {
   const [activeCategory, setActiveCategory] = useState(0)
   const [sortType, setSortType] = useState({ name: 'популярности', sortParam: 'popularity' })
   const [sortingOrder, setSortingOrder] = useState(true)
+  const [pageNumber, setPageNumber] = useState(0)
 
   const sortList = [
     { name: 'популярности', sortParam: 'popularity' },
@@ -25,18 +26,21 @@ function App() {
 
   const fetchData = useCallback(async () => {
     setIsPizzasLoaded(true)
-    const response = await axios.get(
-      `https://658456004d1ee97c6bcf867b.mockapi.io/pizzas?sortBy=${sortType.sortParam}&order=${
-        sortingOrder ? 'asc' : 'desc'
-      }&${activeCategory > 0 ? `type=${activeCategory}` : ''}`
-    )
+
+    const urlRequest = `https://658456004d1ee97c6bcf867b.mockapi.io/pizzas?page=${
+      pageNumber + 1
+    }&limit=8&sortBy=${sortType.sortParam}&order=${sortingOrder ? 'asc' : 'desc'}&${
+      activeCategory > 0 ? `type=${activeCategory}` : ''
+    }`
+    const response = await axios.get(urlRequest)
+
     setPizzaList(response.data)
     setIsPizzasLoaded(false)
-  }, [activeCategory, sortType, sortingOrder])
+  }, [activeCategory, sortType, sortingOrder, pageNumber])
 
   useEffect(() => {
     fetchData()
-  }, [activeCategory, sortType, sortingOrder])
+  }, [fetchData])
 
   return (
     <div className='wrapper'>
@@ -58,6 +62,7 @@ function App() {
               setSortType={setSortType}
               setSortingOrder={setSortingOrder}
               sortingOrder={sortingOrder}
+              setPageNumber={setPageNumber}
             />
           }
         />
