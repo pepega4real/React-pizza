@@ -6,23 +6,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './Pages/Home'
 import Cart from './Pages/Cart'
+import { useSelector } from 'react-redux'
 
 function App() {
   const [pizzaList, setPizzaList] = useState([])
   const [isPizzasLoaded, setIsPizzasLoaded] = useState(true)
-  const [searchPizzasValue, setSearchPizzasValue] = useState('')
-  const [activeSortIndex, setActiveSortIndex] = useState(0)
-  const [activeCategory, setActiveCategory] = useState(0)
-  const [sortType, setSortType] = useState({ name: 'популярности', sortParam: 'popularity' })
-  const [sortingOrder, setSortingOrder] = useState(true)
+  // const [searchPizzasValue, setSearchPizzasValue] = useState('')
   const [pageNumber, setPageNumber] = useState(0)
 
-  const sortList = [
-    { name: 'популярности', sortParam: 'popularity' },
-    { name: 'цене', sortParam: 'price' },
-    { name: 'алфавиту', sortParam: 'title' },
-  ]
-  const categoriesList = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
+  const { sortType, activeCategory, sortingOrder } = useSelector((state) => state.filter)
 
   const fetchData = useCallback(async () => {
     setIsPizzasLoaded(true)
@@ -44,24 +36,14 @@ function App() {
 
   return (
     <div className='wrapper'>
-      <Header searchPizzasValue={searchPizzasValue} setSearchPizzasValue={setSearchPizzasValue} />
+      <Header />
       <Routes>
         <Route
           path='/'
           element={
             <Home
-              searchPizzasValue={searchPizzasValue}
               pizzaList={pizzaList}
               isPizzasLoaded={isPizzasLoaded}
-              categoriesList={categoriesList}
-              activeCategory={activeCategory}
-              setActiveCategory={setActiveCategory}
-              sortList={sortList}
-              activeSortIndex={activeSortIndex}
-              setActiveSortIndex={setActiveSortIndex}
-              setSortType={setSortType}
-              setSortingOrder={setSortingOrder}
-              sortingOrder={sortingOrder}
               setPageNumber={setPageNumber}
             />
           }

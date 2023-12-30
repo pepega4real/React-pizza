@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './Categories.module.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import { setActiveCategory } from '../../redux/slices/filterSlice'
 
-const Categories = ({ categoriesList, activeCategory, setActiveCategory }) => {
+const Categories = () => {
+  const dispatch = useDispatch()
+  const { categoriesList, activeCategory } = useSelector((state) => state.filter)
+
   const changeActiveCategory = (index) => {
-    setActiveCategory(index)
+    dispatch(setActiveCategory(index))
   }
 
   return (

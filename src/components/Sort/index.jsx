@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styles from './Sort.module.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import { setActiveSortIndex, setSortType, setSortingOrder } from '../../redux/slices/filterSlice'
 
-const Sort = ({
-  sortList,
-  activeSortIndex,
-  setActiveSortIndex,
-  setSortType,
-  setSortingOrder,
-  sortingOrder,
-}) => {
+const Sort = () => {
+  const dispatch = useDispatch()
+  const { sortingOrder, sortList, activeSortIndex } = useSelector((state) => state.filter)
+
   const [toggleSort, setToggleSort] = useState(false)
 
   const toggleSortPopup = () => {
     setToggleSort((prev) => !prev)
   }
 
-  const changeActiveIndex = (index, sortObj) => {
-    setActiveSortIndex(index)
+  const changeActiveIndex = (index, sortParam) => {
+    dispatch(setActiveSortIndex(index))
     setToggleSort(false)
-    setSortType(sortObj)
+    dispatch(setSortType(sortParam))
   }
 
   return (
@@ -26,7 +24,7 @@ const Sort = ({
       <div className='sort__label'>
         <svg
           className={sortingOrder ? styles.arrowSvgDesc : styles.arrowSvgAsc}
-          onClick={() => setSortingOrder((prev) => !prev)}
+          onClick={() => dispatch(setSortingOrder())}
           width='10'
           height='6'
           viewBox='0 0 10 6'
@@ -46,7 +44,7 @@ const Sort = ({
             {sortList.map((sortObj, i) => (
               <li
                 className={activeSortIndex === i ? 'active' : ''}
-                onClick={() => changeActiveIndex(i, sortObj)}
+                onClick={() => changeActiveIndex(i, sortObj.sortParam)}
                 key={sortObj.name}>
                 {sortObj.name}
               </li>

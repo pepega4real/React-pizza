@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import PizzasSearch from '../components/PizzasSearch'
 
-const Header = ({ searchPizzasValue, setSearchPizzasValue }) => {
+const Header = () => {
   return (
     <div className='header'>
       <div className='container'>
@@ -17,10 +17,7 @@ const Header = ({ searchPizzasValue, setSearchPizzasValue }) => {
             <p>самая вкусная пицца во вселенной</p>
           </div>
         </div>
-        <PizzasSearch
-          searchPizzasValue={searchPizzasValue}
-          setSearchPizzasValue={setSearchPizzasValue}
-        />
+        <PizzasSearch />
         <div className='header__cart'>
           <Link to='/cart'>
             <button className='button button--cart'>

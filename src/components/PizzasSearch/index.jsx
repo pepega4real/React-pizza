@@ -1,7 +1,12 @@
 import React from 'react'
 import styles from './PizzasSearch.module.scss'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSearchPizzasValue } from '../../redux/slices/filterSlice'
 
-const PizzasSearch = ({ searchPizzasValue, setSearchPizzasValue }) => {
+const PizzasSearch = () => {
+  const dispath = useDispatch()
+  const searchPizzasValue = useSelector((state) => state.filter.searchPizzasValue)
+
   return (
     <div className={styles.root}>
       <svg
@@ -20,7 +25,7 @@ const PizzasSearch = ({ searchPizzasValue, setSearchPizzasValue }) => {
       </svg>
       <input
         value={searchPizzasValue}
-        onChange={(event) => setSearchPizzasValue(event.target.value)}
+        onChange={(event) => dispath(setSearchPizzasValue(event.target.value))}
         className={styles.input}
         type='text'
         placeholder='Поиск пиццы...'

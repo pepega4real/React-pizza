@@ -4,22 +4,11 @@ import Sort from '../components/Sort'
 import PizzaBlock from '../components/PizzaBlock'
 import PizzaLoader from '../components/PizzaBlock/PizzaLoader'
 import Pagination from '../components/Pagination'
+import { useSelector } from 'react-redux'
 
-const Home = ({
-  pizzaList,
-  isPizzasLoaded,
-  searchPizzasValue,
-  categoriesList,
-  activeCategory,
-  setActiveCategory,
-  sortList,
-  activeSortIndex,
-  setActiveSortIndex,
-  setSortType,
-  setSortingOrder,
-  sortingOrder,
-  setPageNumber,
-}) => {
+const Home = ({ pizzaList, isPizzasLoaded, setPageNumber }) => {
+  const searchPizzasValue = useSelector((state) => state.filter.searchPizzasValue)
+
   const skeletonsLoader = [...Array(4)].map((_, index) => <PizzaLoader key={index} />)
   const filteredPizzas = pizzaList.filter((pizza) =>
     pizza.title.toLowerCase().includes(searchPizzasValue.toLowerCase())
@@ -29,19 +18,8 @@ const Home = ({
     <div className='content'>
       <div className='container'>
         <div className='content__top'>
-          <Categories
-            categoriesList={categoriesList}
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />
-          <Sort
-            sortList={sortList}
-            activeSortIndex={activeSortIndex}
-            setActiveSortIndex={setActiveSortIndex}
-            setSortType={setSortType}
-            setSortingOrder={setSortingOrder}
-            sortingOrder={sortingOrder}
-          />
+          <Categories />
+          <Sort />
         </div>
         <h2 className='content__title'>Все пиццы</h2>
         <div className='content__items'>
