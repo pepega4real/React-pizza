@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styles from './PizzasSearch.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSearchPizzasValue } from '../../redux/slices/filterSlice'
@@ -6,6 +6,12 @@ import { setSearchPizzasValue } from '../../redux/slices/filterSlice'
 const PizzasSearch = () => {
   const dispath = useDispatch()
   const searchPizzasValue = useSelector((state) => state.filter.searchPizzasValue)
+  const inputRef = useRef()
+
+  const clearSearchInput = () => {
+    dispath(setSearchPizzasValue(''))
+    inputRef.current.focus()
+  }
 
   return (
     <div className={styles.root}>
@@ -24,6 +30,7 @@ const PizzasSearch = () => {
         <line x1='21' x2='16.65' y1='21' y2='16.65' />
       </svg>
       <input
+        ref={inputRef}
         value={searchPizzasValue}
         onChange={(event) => dispath(setSearchPizzasValue(event.target.value))}
         className={styles.input}
@@ -32,7 +39,7 @@ const PizzasSearch = () => {
       />
       {searchPizzasValue && (
         <svg
-          onClick={() => setSearchPizzasValue('')}
+          onClick={clearSearchInput}
           className={styles.svgClear}
           fill='none'
           height='24'

@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
 import styles from './Sort.module.scss'
+
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+import { sortList } from '../../constants/filter'
 import { setActiveSortIndex, setSortType, setSortingOrder } from '../../redux/slices/filterSlice'
 
 const Sort = () => {
   const dispatch = useDispatch()
-  const { sortingOrder, sortList, activeSortIndex } = useSelector((state) => state.filter)
+  const sortingOrder = useSelector((state) => state.filter.sortingOrder)
+  const activeSortIndex = useSelector((state) => state.filter.activeSortIndex)
 
   const [toggleSort, setToggleSort] = useState(false)
 
@@ -23,7 +27,7 @@ const Sort = () => {
     <div className='sort'>
       <div className='sort__label'>
         <svg
-          className={sortingOrder ? styles.arrowSvgDesc : styles.arrowSvgAsc}
+          className={sortingOrder === 'asc' ? styles.arrowSvgDesc : styles.arrowSvgAsc}
           onClick={() => dispatch(setSortingOrder())}
           width='10'
           height='6'

@@ -6,7 +6,7 @@ import PizzaLoader from '../components/PizzaBlock/PizzaLoader'
 import Pagination from '../components/Pagination'
 import { useSelector } from 'react-redux'
 
-const Home = ({ pizzaList, isPizzasLoaded, setPageNumber }) => {
+const Home = ({ pizzaList, isPizzasLoaded }) => {
   const searchPizzasValue = useSelector((state) => state.filter.searchPizzasValue)
 
   const skeletonsLoader = [...Array(4)].map((_, index) => <PizzaLoader key={index} />)
@@ -27,7 +27,7 @@ const Home = ({ pizzaList, isPizzasLoaded, setPageNumber }) => {
             ? skeletonsLoader
             : filteredPizzas.map((pizza) => <PizzaBlock key={pizza?.imgUrl} {...pizza} />)}
         </div>
-        <Pagination setPageNumber={setPageNumber} />
+        <Pagination />
       </div>
     </div>
   )

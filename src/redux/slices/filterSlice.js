@@ -1,17 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  categoriesList: ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'],
-  sortList: [
-    { name: 'популярности', sortParam: 'popularity' },
-    { name: 'цене', sortParam: 'price' },
-    { name: 'алфавиту', sortParam: 'title' },
-  ],
-  sortingOrder: true,
+  sortingOrder: 'asc',
   sortType: { name: 'популярности', sortParam: 'popularity' },
   activeCategory: 0,
   activeSortIndex: 0,
   searchPizzasValue: '',
+  pageNumber: 0,
 }
 
 export const filterSlice = createSlice({
@@ -28,10 +23,23 @@ export const filterSlice = createSlice({
       state.sortType.sortParam = action.payload
     },
     setSortingOrder(state) {
-      state.sortingOrder = !state.sortingOrder
+      if (state.sortingOrder === 'asc') {
+        state.sortingOrder = 'desc'
+      } else {
+        state.sortingOrder = 'asc'
+      }
     },
     setSearchPizzasValue(state, action) {
       state.searchPizzasValue = action.payload
+    },
+    setPageNumber(state, action) {
+      state.pageNumber = action.payload
+    },
+    setFilters(state, action) {
+      state.pageNumber = Number(action.payload.page) || 0
+      state.sortType.sortParam = action.payload.sortBy || state.sortType.sortParam
+      state.sortingOrder = action.payload.order || state.sortType.sortParam
+      state.activeCategory = Number(action.payload.type) || 0
     },
   },
 })
@@ -42,6 +50,8 @@ export const {
   setSortType,
   setSortingOrder,
   setSearchPizzasValue,
+  setPageNumber,
+  setFilters,
 } = filterSlice.actions
 
 export default filterSlice.reducer
