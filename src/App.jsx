@@ -1,3 +1,8 @@
+import qs from 'qs'
+import { useEffect, useRef } from 'react'
+import { Route, Routes, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
 import './App.css'
 import './scss/app.scss'
 
@@ -5,14 +10,8 @@ import Header from './components/Header'
 import Home from './Pages/Home'
 import Cart from './Pages/Cart'
 import { sortList } from './constants/filter'
-
-import axios from 'axios'
-import qs from 'qs'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { setFilters } from './redux/slices/filterSlice'
-import { setIsPizzasLoaded, setPizzaList } from './redux/slices/pizzaSlice'
+import { fetchPizza } from './redux/slices/pizzaSlice'
 
 function App() {
   const navigate = useNavigate()
@@ -42,28 +41,15 @@ function App() {
     }
   }, [])
 
-  const fetchData = useCallback(async () => {
-    dispath(setIsPizzasLoaded(true))
-
-    const urlRequest = `https://658456004d1ee97c6bcf867b.mockapi.io/pizzas?page=${
-      pageNumber + 1
-    }&limit=8&sortBy=${sortType.sortParam}&order=${sortingOrder}&${
-      activeCategory > 0 ? `type=${activeCategory}` : ''
-    }`
-    const response = await axios.get(urlRequest)
-
-    dispath(setPizzaList(response.data))
-
-    dispath(setIsPizzasLoaded(false))
-  }, [activeCategory, sortType, sortingOrder, pageNumber])
+  dispath(fetchPizza({ pageNumber, sortType, sortingOrder, activeCategory }))
 
   useEffect(() => {
     if (!isSearch.current) {
-      fetchData()
+      dispath(fetchPizza({ pageNumber, sortType, sortingOrder, activeCategory }))
     }
 
     isSearch.current = false
-  }, [fetchData])
+  }, [pageNumber, sortType, sortingOrder, activeCategory, dispath])
 
   useEffect(() => {
     if (isMounted.current) {

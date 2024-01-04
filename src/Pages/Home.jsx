@@ -10,7 +10,7 @@ import Pagination from '../components/Pagination'
 const Home = () => {
   const searchPizzasValue = useSelector((state) => state.filter.searchPizzasValue)
   const pizzaList = useSelector((state) => state.pizza.pizzaList)
-  const isPizzasLoaded = useSelector((state) => state.pizza.isPizzasLoaded)
+  const isPizzaLoaded = useSelector((state) => state.pizza.isPizzaLoaded)
 
   const skeletonsLoader = [...Array(4)].map((_, index) => <PizzaLoader key={index} />)
 
@@ -27,7 +27,7 @@ const Home = () => {
         </div>
         <h2 className='content__title'>Все пиццы</h2>
         <div className='content__items'>
-          {isPizzasLoaded
+          {isPizzaLoaded
             ? skeletonsLoader
             : filteredPizzas.map((pizza) => <PizzaBlock key={pizza?.imgUrl} {...pizza} />)}
         </div>
