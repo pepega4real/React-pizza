@@ -1,6 +1,6 @@
 import styles from './Sort.module.scss'
 
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { sortList } from '../../constants/filter'
@@ -12,6 +12,7 @@ const Sort = () => {
   const activeSortIndex = useSelector((state) => state.filter.activeSortIndex)
 
   const [toggleSort, setToggleSort] = useState(false)
+  const sortRef = useRef()
 
   const toggleSortPopup = () => {
     setToggleSort((prev) => !prev)
@@ -23,8 +24,22 @@ const Sort = () => {
     dispatch(setSortType(sortParam))
   }
 
+  useEffect(() => {
+    const handleClickSort = (e) => {
+      if (!e.composedPath().includes(sortRef.current)) {
+        setToggleSort(false)
+      }
+    }
+
+    document.body.addEventListener('click', handleClickSort)
+
+    return () => {
+      document.body.removeEventListener('click', handleClickSort)
+    }
+  }, [])
+
   return (
-    <div className='sort'>
+    <div ref={sortRef} className='sort'>
       <div className='sort__label'>
         <svg
           className={sortingOrder === 'asc' ? styles.arrowSvgDesc : styles.arrowSvgAsc}

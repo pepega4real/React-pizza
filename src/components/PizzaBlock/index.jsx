@@ -1,18 +1,36 @@
 import React, { memo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-const PizzaBlock = ({ title, imgUrl, price }) => {
-  const [pizzaCount, setPizzaCount] = useState(0)
-  const doughList = ['тонкое', 'традиционное']
-  const [toggleDouth, setToggleDouth] = useState(0)
-  const sizePizzaList = [26, 30, 40]
+import { setCartItemsList } from '../../redux/slices/cartSlice'
+import { doughList, sizePizzaList } from '../../constants/pizza'
+
+const PizzaBlock = ({ id, title, imgUrl, price }) => {
+  const dispath = useDispatch()
+
+  const cartItem = useSelector((state) =>
+    state.cart.cartItemsList.find((cartItem) => cartItem.id === id)
+  )
+
+  const cartItemCount = cartItem ? cartItem.count : 0
+
+  const [activeDouth, setActiveDouth] = useState(0)
   const [activeSizePizza, setActiveSizePizza] = useState(0)
 
-  const addPizzaCount = () => {
-    setPizzaCount((prev) => prev + 1)
+  const addPizzaToCart = () => {
+    const cartItem = {
+      id,
+      title,
+      imgUrl,
+      price,
+      dought: doughList[activeDouth],
+      size: sizePizzaList[activeSizePizza],
+    }
+
+    dispath(setCartItemsList(cartItem))
   }
 
   const changeDough = (index) => {
-    setToggleDouth(index)
+    setActiveDouth(index)
   }
 
   const changeSizePizza = (index) => {
@@ -28,7 +46,7 @@ const PizzaBlock = ({ title, imgUrl, price }) => {
           <ul>
             {doughList.map((doughtName, index) => (
               <li
-                className={toggleDouth === index ? 'active' : ''}
+                className={activeDouth === index ? 'active' : ''}
                 key={index}
                 onClick={() => changeDough(index)}>
                 {doughtName}
@@ -48,7 +66,7 @@ const PizzaBlock = ({ title, imgUrl, price }) => {
         </div>
         <div className='pizza-block__bottom'>
           <div className='pizza-block__price'>от {price} ₽</div>
-          <button onClick={addPizzaCount} className='button button--outline button--add'>
+          <button onClick={addPizzaToCart} className='button button--outline button--add'>
             <svg
               width='12'
               height='12'
@@ -61,7 +79,7 @@ const PizzaBlock = ({ title, imgUrl, price }) => {
               />
             </svg>
             <span>Добавить</span>
-            <i>{pizzaCount}</i>
+            {cartItemCount > 0 && <i>{cartItemCount}</i>}
           </button>
         </div>
       </div>

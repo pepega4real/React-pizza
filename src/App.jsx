@@ -12,13 +12,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFilters } from './redux/slices/filterSlice'
+import { setIsPizzasLoaded, setPizzaList } from './redux/slices/pizzaSlice'
 
 function App() {
   const navigate = useNavigate()
   const dispath = useDispatch()
-
-  const [pizzaList, setPizzaList] = useState([])
-  const [isPizzasLoaded, setIsPizzasLoaded] = useState(true)
 
   const isSearch = useRef(false)
   const isMounted = useRef(false)
@@ -45,7 +43,7 @@ function App() {
   }, [])
 
   const fetchData = useCallback(async () => {
-    setIsPizzasLoaded(true)
+    dispath(setIsPizzasLoaded(true))
 
     const urlRequest = `https://658456004d1ee97c6bcf867b.mockapi.io/pizzas?page=${
       pageNumber + 1
@@ -54,8 +52,9 @@ function App() {
     }`
     const response = await axios.get(urlRequest)
 
-    setPizzaList(response.data)
-    setIsPizzasLoaded(false)
+    dispath(setPizzaList(response.data))
+
+    dispath(setIsPizzasLoaded(false))
   }, [activeCategory, sortType, sortingOrder, pageNumber])
 
   useEffect(() => {
@@ -85,7 +84,7 @@ function App() {
     <div className='wrapper'>
       <Header />
       <Routes>
-        <Route path='/' element={<Home pizzaList={pizzaList} isPizzasLoaded={isPizzasLoaded} />} />
+        <Route path='/' element={<Home />} />
         <Route path='/cart' element={<Cart />} />
       </Routes>
     </div>
