@@ -1,11 +1,15 @@
-import React, { useRef } from 'react'
-import styles from './PizzasSearch.module.scss'
+import { memo, useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
+
+import styles from './PizzasSearch.module.scss'
+
 import { setSearchPizzasValue } from '../../redux/slices/filterSlice'
 
 const PizzasSearch = () => {
   const dispath = useAppDispatch()
-  const searchPizzasValue = useAppSelector((state) => state.filter.searchPizzasValue)
+
+  const searchPizzasValue = useAppSelector(state => state.filter.searchPizzasValue)
+
   const inputRef = useRef<HTMLInputElement>(null)
 
   const clearSearchInput = () => {
@@ -32,7 +36,7 @@ const PizzasSearch = () => {
       <input
         ref={inputRef}
         value={searchPizzasValue}
-        onChange={(event) => dispath(setSearchPizzasValue(event.target.value))}
+        onChange={event => dispath(setSearchPizzasValue(event.target.value))}
         className={styles.input}
         type='text'
         placeholder='Поиск пиццы...'
@@ -56,4 +60,4 @@ const PizzasSearch = () => {
   )
 }
 
-export default PizzasSearch
+export default memo(PizzasSearch)

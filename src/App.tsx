@@ -6,22 +6,11 @@ import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
 import './App.css'
 import './scss/app.scss'
 
-import Header from './components/Header'
-import Home from './Pages/Home'
 import Cart from './Pages/Cart'
-import { sortList } from './constants/filter'
+import Home from './Pages/Home'
+import Header from './components/Header'
 import { setFilters } from './redux/slices/filterSlice'
 import { fetchPizza } from './redux/slices/pizzaSlice'
-
-// type fetchProps = {
-//   pageNumber: number
-//   sortType: {
-//     name: string
-//     sortParam: string
-//   }
-//   sortingOrder: string
-//   activeCategory: number
-// }
 
 function App() {
   const navigate = useNavigate()
@@ -30,10 +19,10 @@ function App() {
   const isSearch = useRef(false)
   const isMounted = useRef(false)
 
-  const sortType = useAppSelector((state) => state.filter.sortType)
-  const activeCategory = useAppSelector((state) => state.filter.activeCategory)
-  const sortingOrder = useAppSelector((state) => state.filter.sortingOrder)
-  const pageNumber = useAppSelector((state) => state.filter.pageNumber)
+  const sortType = useAppSelector(state => state.filter.sortType)
+  const activeCategory = useAppSelector(state => state.filter.activeCategory)
+  const sortingOrder = useAppSelector(state => state.filter.sortingOrder)
+  const pageNumber = useAppSelector(state => state.filter.pageNumber)
 
   useEffect(() => {
     if (window.location.search) {
@@ -56,12 +45,11 @@ function App() {
       isSearch.current = true
     }
   }, [])
-  //@ts-ignore
+
   dispath(fetchPizza({ pageNumber, sortType, sortingOrder, activeCategory }))
 
   useEffect(() => {
     if (!isSearch.current) {
-      //@ts-ignore
       dispath(fetchPizza({ pageNumber, sortType, sortingOrder, activeCategory }))
     }
 

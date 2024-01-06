@@ -1,13 +1,14 @@
-import styles from './Categories.module.scss'
-
+import { memo } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 
-import { setActiveCategory } from '../../redux/slices/filterSlice'
-import { categoriesList } from '../../constants/filter'
+import styles from './Categories.module.scss'
 
-const Categories: React.FC = () => {
+import { categoriesList } from '../../constants/filter'
+import { setActiveCategory } from '../../redux/slices/filterSlice'
+
+const Categories = () => {
   const dispatch = useAppDispatch()
-  const activeCategory = useAppSelector((state) => state.filter.activeCategory)
+  const activeCategory = useAppSelector(state => state.filter.activeCategory)
 
   const changeActiveCategory = (index: number) => {
     dispatch(setActiveCategory(index))
@@ -29,4 +30,4 @@ const Categories: React.FC = () => {
   )
 }
 
-export default Categories
+export default memo(Categories)

@@ -1,21 +1,25 @@
-import React from 'react'
+import { memo, useMemo } from 'react'
 import { useAppSelector } from '../hooks/reduxHooks'
 
 import Categories from '../components/Categories/Categories'
-import Sort from '../components/Sort'
+import Pagination from '../components/Pagination'
 import PizzaBlock from '../components/PizzaBlock'
 import PizzaLoader from '../components/PizzaBlock/PizzaLoader'
-import Pagination from '../components/Pagination'
+import Sort from '../components/Sort'
 
 const Home = () => {
-  const searchPizzasValue = useAppSelector((state) => state.filter.searchPizzasValue)
-  const pizzaList = useAppSelector((state) => state.pizza.pizzaList)
-  const isPizzaLoaded = useAppSelector((state) => state.pizza.isPizzaLoaded)
+  const searchPizzasValue = useAppSelector(state => state.filter.searchPizzasValue)
+  const pizzaList = useAppSelector(state => state.pizza.pizzaList)
+  const isPizzaLoaded = useAppSelector(state => state.pizza.isPizzaLoaded)
 
   const skeletonsLoader = [...Array(4)].map((_, index) => <PizzaLoader key={index} />)
 
-  const filteredPizzas = pizzaList.filter((pizza: any) =>
-    pizza.title.toLowerCase().includes(searchPizzasValue.toLowerCase())
+  const filteredPizzas = useMemo(
+    () =>
+      pizzaList.filter(pizza =>
+        pizza.title.toLowerCase().includes(searchPizzasValue.toLowerCase())
+      ),
+    [searchPizzasValue, pizzaList]
   )
 
   return (
@@ -29,7 +33,7 @@ const Home = () => {
         <div className='content__items'>
           {isPizzaLoaded
             ? skeletonsLoader
-            : filteredPizzas.map((pizza: any) => <PizzaBlock key={pizza?.imgUrl} {...pizza} />)}
+            : filteredPizzas.map(pizza => <PizzaBlock key={pizza?.imgUrl} {...pizza} />)}
         </div>
         <Pagination />
       </div>
@@ -37,4 +41,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default memo(Home)
