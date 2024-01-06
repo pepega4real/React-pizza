@@ -1,14 +1,21 @@
 import React, { memo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 
 import { setCartItemsList } from '../../redux/slices/cartSlice'
 import { doughList, sizePizzaList } from '../../constants/pizza'
 
-const PizzaBlock = ({ id, title, imgUrl, price }) => {
-  const dispath = useDispatch()
+type PizzaBlockProps = {
+  id: number
+  title: string
+  imgUrl: string
+  price: number
+}
 
-  const cartItem = useSelector((state) =>
-    state.cart.cartItemsList.find((cartItem) => cartItem.id === id)
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, title, imgUrl, price }) => {
+  const dispath = useAppDispatch()
+
+  const cartItem: any = useAppSelector((state) =>
+    state.cart.cartItemsList.find((cartItem: any) => cartItem.id === id)
   )
 
   const cartItemCount = cartItem ? cartItem.count : 0
@@ -24,16 +31,17 @@ const PizzaBlock = ({ id, title, imgUrl, price }) => {
       price,
       dought: doughList[activeDouth],
       size: sizePizzaList[activeSizePizza],
+      count: 0,
     }
 
     dispath(setCartItemsList(cartItem))
   }
 
-  const changeDough = (index) => {
+  const changeDough = (index: number) => {
     setActiveDouth(index)
   }
 
-  const changeSizePizza = (index) => {
+  const changeSizePizza = (index: number) => {
     setActiveSizePizza(index)
   }
 

@@ -1,17 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks'
 
 import CartItem from '../components/CartItem'
 import { deleteCart } from '../redux/slices/cartSlice'
 import EmptyCart from '../components/EmptyCart'
 
 const Cart = () => {
-  const dispath = useDispatch()
+  const dispath = useAppDispatch()
 
-  const totalCartItems = useSelector((state) => state.cart.totalCartItems)
-  const totalCartPrice = useSelector((state) => state.cart.totalCartPrice)
-  const cartItemsList = useSelector((state) => state.cart.cartItemsList)
+  const totalCartItems = useAppSelector((state) => state.cart.totalCartItems)
+  const totalCartPrice = useAppSelector((state) => state.cart.totalCartPrice)
+  const cartItemsList = useAppSelector((state) => state.cart.cartItemsList)
 
   const onClickDeleteCart = () => {
     if (window.confirm('Удалить все товары из корзины?')) {
@@ -24,12 +24,12 @@ const Cart = () => {
   }
 
   return (
-    <div class='wrapper'>
-      <div class='content'>
-        <div class='container container--cart'>
-          <div class='cart'>
-            <div class='cart__top'>
-              <h2 class='content__title'>
+    <div className='wrapper'>
+      <div className='content'>
+        <div className='container container--cart'>
+          <div className='cart'>
+            <div className='cart__top'>
+              <h2 className='content__title'>
                 <svg
                   width='18'
                   height='18'
@@ -60,7 +60,7 @@ const Cart = () => {
                 </svg>
                 Корзина
               </h2>
-              <div onClick={onClickDeleteCart} class='cart__clear'>
+              <div onClick={onClickDeleteCart} className='cart__clear'>
                 <svg
                   width='20'
                   height='20'
@@ -100,13 +100,13 @@ const Cart = () => {
                 <span>Очистить корзину</span>
               </div>
             </div>
-            <div class='content__items'>
-              {cartItemsList.map((cartItem) => (
+            <div className='content__items'>
+              {cartItemsList.map((cartItem: any) => (
                 <CartItem key={cartItem.id} {...cartItem} />
               ))}
             </div>
-            <div class='cart__bottom'>
-              <div class='cart__bottom-details'>
+            <div className='cart__bottom'>
+              <div className='cart__bottom-details'>
                 <span>
                   Всего пицц: <b>{totalCartItems} шт.</b>
                 </span>
@@ -114,9 +114,9 @@ const Cart = () => {
                   Сумма заказа: <b>{totalCartPrice} ₽</b>
                 </span>
               </div>
-              <div class='cart__bottom-buttons'>
+              <div className='cart__bottom-buttons'>
                 <Link to='/'>
-                  <button href='/' class='button button--outline button--add go-back-btn'>
+                  <button className='button button--outline button--add go-back-btn'>
                     <svg
                       width='8'
                       height='14'
@@ -136,7 +136,7 @@ const Cart = () => {
                   </button>
                 </Link>
 
-                <div class='button pay-btn'>
+                <div className='button pay-btn'>
                   <span>Оплатить сейчас</span>
                 </div>
               </div>

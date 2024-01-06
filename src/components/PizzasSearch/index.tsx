@@ -1,16 +1,16 @@
 import React, { useRef } from 'react'
 import styles from './PizzasSearch.module.scss'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 import { setSearchPizzasValue } from '../../redux/slices/filterSlice'
 
 const PizzasSearch = () => {
-  const dispath = useDispatch()
-  const searchPizzasValue = useSelector((state) => state.filter.searchPizzasValue)
-  const inputRef = useRef()
+  const dispath = useAppDispatch()
+  const searchPizzasValue = useAppSelector((state) => state.filter.searchPizzasValue)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const clearSearchInput = () => {
     dispath(setSearchPizzasValue(''))
-    inputRef.current.focus()
+    inputRef.current?.focus()
   }
 
   return (

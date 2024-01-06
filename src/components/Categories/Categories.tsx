@@ -1,16 +1,15 @@
 import styles from './Categories.module.scss'
 
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 
 import { setActiveCategory } from '../../redux/slices/filterSlice'
 import { categoriesList } from '../../constants/filter'
 
-const Categories = () => {
-  const dispatch = useDispatch()
-  const activeCategory = useSelector((state) => state.filter.activeCategory)
+const Categories: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const activeCategory = useAppSelector((state) => state.filter.activeCategory)
 
-  const changeActiveCategory = (index) => {
+  const changeActiveCategory = (index: number) => {
     dispatch(setActiveCategory(index))
   }
 

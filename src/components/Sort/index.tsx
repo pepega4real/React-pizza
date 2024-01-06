@@ -1,32 +1,32 @@
 import styles from './Sort.module.scss'
 
-import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks'
 
 import { sortList } from '../../constants/filter'
 import { setActiveSortIndex, setSortType, setSortingOrder } from '../../redux/slices/filterSlice'
 
-const Sort = () => {
-  const dispatch = useDispatch()
-  const sortingOrder = useSelector((state) => state.filter.sortingOrder)
-  const activeSortIndex = useSelector((state) => state.filter.activeSortIndex)
+const Sort: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const sortingOrder = useAppSelector((state) => state.filter.sortingOrder)
+  const activeSortIndex = useAppSelector((state) => state.filter.activeSortIndex)
 
   const [toggleSort, setToggleSort] = useState(false)
-  const sortRef = useRef()
+  const sortRef = useRef<HTMLDivElement>(null)
 
   const toggleSortPopup = () => {
     setToggleSort((prev) => !prev)
   }
 
-  const changeActiveIndex = (index, sortParam) => {
+  const changeActiveIndex = (index: number, sortParam: string) => {
     dispatch(setActiveSortIndex(index))
     setToggleSort(false)
     dispatch(setSortType(sortParam))
   }
 
   useEffect(() => {
-    const handleClickSort = (e) => {
-      if (!e.composedPath().includes(sortRef.current)) {
+    const handleClickSort = (e: MouseEvent) => {
+      if (sortRef.current && !e.composedPath().includes(sortRef.current)) {
         setToggleSort(false)
       }
     }

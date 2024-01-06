@@ -10,8 +10,15 @@
     justify-content: center;
   }
 
+  &:hover {
+    .pizza-block__image {
+      transform: translateY(5px);
+    }
+  }
+
   &__image {
     width: 260px;
+    transition: transform 0.2s ease-in-out;
   }
 
   &__title {

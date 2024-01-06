@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { useEffect, useRef } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
 
 import './App.css'
 import './scss/app.scss'
@@ -13,43 +13,60 @@ import { sortList } from './constants/filter'
 import { setFilters } from './redux/slices/filterSlice'
 import { fetchPizza } from './redux/slices/pizzaSlice'
 
+// type fetchProps = {
+//   pageNumber: number
+//   sortType: {
+//     name: string
+//     sortParam: string
+//   }
+//   sortingOrder: string
+//   activeCategory: number
+// }
+
 function App() {
   const navigate = useNavigate()
-  const dispath = useDispatch()
+  const dispath = useAppDispatch()
 
   const isSearch = useRef(false)
   const isMounted = useRef(false)
 
-  const sortType = useSelector((state) => state.filter.sortType)
-  const activeCategory = useSelector((state) => state.filter.activeCategory)
-  const sortingOrder = useSelector((state) => state.filter.sortingOrder)
-  const pageNumber = useSelector((state) => state.filter.pageNumber)
+  const sortType = useAppSelector((state) => state.filter.sortType)
+  const activeCategory = useAppSelector((state) => state.filter.activeCategory)
+  const sortingOrder = useAppSelector((state) => state.filter.sortingOrder)
+  const pageNumber = useAppSelector((state) => state.filter.pageNumber)
 
   useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1))
-      const sort = sortList.find((sortObj) => sortObj.sortParam === params.sortBy)
+      const params: {
+        page?: string
+        sortBy?: string
+        order?: string
+        type?: string
+      } = qs.parse(window.location.search.substring(1))
 
       dispath(
         setFilters({
-          ...params,
-          sort,
+          page: Number(params.page) || 0,
+          sortBy: params.sortBy || '',
+          order: params.order || '',
+          type: Number(params.type) || 0,
         })
       )
 
       isSearch.current = true
     }
   }, [])
-
+  //@ts-ignore
   dispath(fetchPizza({ pageNumber, sortType, sortingOrder, activeCategory }))
 
   useEffect(() => {
     if (!isSearch.current) {
+      //@ts-ignore
       dispath(fetchPizza({ pageNumber, sortType, sortingOrder, activeCategory }))
     }
 
     isSearch.current = false
-  }, [pageNumber, sortType, sortingOrder, activeCategory, dispath])
+  }, [dispath])
 
   useEffect(() => {
     if (isMounted.current) {
