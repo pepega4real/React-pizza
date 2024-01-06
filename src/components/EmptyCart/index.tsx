@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
 import emptyCartImg from '../../assets/img/empty-cart.png'
@@ -25,4 +26,4 @@ const EmptyCart = () => {
   )
 }
 
-export default EmptyCart
+export default memo(EmptyCart)

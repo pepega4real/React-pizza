@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useAppDispatch } from '../../hooks/reduxHooks'
 
@@ -24,4 +25,4 @@ const Pagination = () => {
   )
 }
 
-export default Pagination
+export default memo(Pagination)
